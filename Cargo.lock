@@ -1,0 +1,11 @@
+[[package]]
+name = "lib-mwanamke"
+version = "0.1.0"
+
+[[package]]
+name = "mwanamke"
+version = "0.1.0"
+dependencies = [
+ "lib-mwanamke 0.1.0",
+]
+

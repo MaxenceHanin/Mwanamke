@@ -1,0 +1,8 @@
+[package]
+name = "mwanamke"
+version = "0.1.0"
+authors = ["Louis Jean <ljean@etud.insa-toulouse.fr>"]
+edition = "2018"
+
+[dependencies]
+lib-mwanamke = { path = "./lib" }

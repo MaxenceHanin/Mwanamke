@@ -1,0 +1,7 @@
+[package]
+name = "lib-mwanamke"
+version = "0.1.0"
+authors = ["Louis Jean <ljean@etud.insa-toulouse.fr>"]
+edition = "2018"
+
+[dependencies]
