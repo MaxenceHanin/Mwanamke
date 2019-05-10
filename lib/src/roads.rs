@@ -1,7 +1,9 @@
 
 use std::collections::HashMap;
 
-struct RoadNetwork {
+pub struct RoadNetwork {
+    /// This map associates a node to a Vec containing the ids of
+    /// the edges connected to this node.
     nodes: HashMap<u32, Vec<u32>>,
     edges: HashMap<u32, RoadEdge>,
 }
@@ -15,7 +17,7 @@ struct RoadEdge {
 }
 
 impl RoadNetwork {
-    fn from_file() {
-
+    pub fn from_file(filestr: &str) -> Result<RoadNetwork, &str> {
+        Err("Not implemented")
     }
 }

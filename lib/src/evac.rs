@@ -20,6 +20,10 @@ enum ParsingState {
 
 impl EvacuationInfo {
 
+    /// Read EvacuationInfo from a file.
+    ///
+    /// Parameters:
+    /// * `filestr`: content of the file containing the data
     pub fn from_file(filestr: &str) -> Result<EvacuationInfo, &str> {
         let mut parsing = ParsingState::Section;
         let mut node_count = -1i32;
