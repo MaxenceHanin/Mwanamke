@@ -75,4 +75,8 @@ impl EvacuationInfo {
             _ => Err("Error while parsing"),
         }
     }
+
+    pub fn is_useful(&self, node1:u32, node2:u32) -> bool{
+        return true;
+    }
 }
