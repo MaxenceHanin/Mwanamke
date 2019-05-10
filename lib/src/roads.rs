@@ -1,5 +1,6 @@
 
 use std::collections::HashMap;
+use std::collections::hash_map::Entry;
 use crate::evac::EvacuationInfo;
 
 pub struct RoadNetwork {
@@ -26,11 +27,11 @@ enum ParsingState {
 
 impl RoadNetwork {
     
-        /// Read EvacuationInfo from a file.
+    /// Read EvacuationInfo from a file.
     ///
     /// Parameters:
     /// * `filestr`: content of the file containing the data
-    pub fn from_file(filestr: &str, evacinfo:&EvacuationInfo) -> Result<RoadNetwork, &str> {
+    pub fn from_file(filestr: &str, evacinfo:&EvacuationInfo) -> Result<RoadNetwork, &'static str> {
         let mut parsing = ParsingState::Section;
         let mut node_count = -1i32;
         let mut key = 0;
@@ -54,16 +55,17 @@ impl RoadNetwork {
                 }
                 ParsingState::Road => {
                     if evacinfo.is_useful(words[0].parse::<u32>().unwrap(),words[1].parse::<u32>().unwrap()) {
-                        let mut edges = RoadEdge {
+                        let edge = RoadEdge {
                             node1:words[0].parse::<u32>().unwrap(),
                             node2:words[1].parse::<u32>().unwrap(),
                             due_date:words[2].parse::<u64>().unwrap(),
                             length:words[3].parse::<f32>().unwrap(),
                             capacity:words[4].parse::<f32>().unwrap(),
                         };
-                    result.edges.insert(key,edges);
-                    result.nodes.insert(key,words[0]);
-                    key+=1;
+                        result.add_edge_reference(edge.node1, key);
+                        result.add_edge_reference(edge.node2, key);
+                        result.edges.insert(key,edge);
+                        key+=1;
                     }
                     node_count -= 1;
 
@@ -79,5 +81,13 @@ impl RoadNetwork {
             ParsingState::End => Ok(result),
             _ => Err("Error while parsing"),
         }
+    }
+
+    fn add_edge_reference(&mut self, node: u32, edge: u32) {
+        let mut vec = match self.nodes.entry(node) {
+            Entry::Occupied(val) => val.into_mut(),
+            Entry::Vacant(vac) => vac.insert(vec![]),
+        };
+        vec.push(edge);
     }
 }
