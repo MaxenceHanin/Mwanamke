@@ -1,4 +1,3 @@
-
 use std::iter::Iterator;
 
 pub struct EvacuationInfo {
@@ -37,7 +36,6 @@ enum ParsingState {
 }
 
 impl EvacuationInfo {
-
     /// Read EvacuationInfo from a file.
     ///
     /// Parameters:
@@ -62,7 +60,11 @@ impl EvacuationInfo {
                 ParsingState::Size => {
                     node_count = words[0].parse::<i32>().unwrap();
                     result.safe_node = words[1].parse::<u32>().unwrap();
-                    parsing = if node_count == 0 { ParsingState::End } else { ParsingState::Node };
+                    parsing = if node_count == 0 {
+                        ParsingState::End
+                    } else {
+                        ParsingState::Node
+                    };
                 }
                 ParsingState::Node => {
                     let mut node = EvacuationNode {
@@ -84,7 +86,7 @@ impl EvacuationInfo {
                         parsing = ParsingState::End;
                     }
                 }
-                ParsingState::End => {},
+                ParsingState::End => {}
             }
         }
 
@@ -94,7 +96,7 @@ impl EvacuationInfo {
         }
     }
 
-    pub fn is_useful(&self, node1:u32, node2:u32) -> bool {
+    pub fn is_useful(&self, node1: u32, node2: u32) -> bool {
         return true;
     }
 }
@@ -154,8 +156,7 @@ impl EvacuationSolution {
 
         if self.valid {
             result.push_str("valid\n");
-        }
-        else {
+        } else {
             result.push_str("invalid\n");
         }
 
@@ -171,7 +172,9 @@ impl EvacuationSolution {
 
     pub fn add_node(&mut self, id: u32, evacuation_rate: f32, start_date: u32) {
         self.nodes.push(SolutionNode {
-            id, evacuation_rate, start_date
+            id,
+            evacuation_rate,
+            start_date,
         });
     }
 
