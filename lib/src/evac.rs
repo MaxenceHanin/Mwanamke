@@ -1,28 +1,32 @@
 use std::iter::Iterator;
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct EvacuationInfo {
-    safe_node: u32,
+    pub safe_node: u32,
     nodes: Vec<EvacuationNode>,
 }
 
-struct EvacuationNode {
-    id: u32,
-    population: u32,
-    max_rate: u32,
-    route: Vec<u32>,
+#[derive(Clone, PartialEq, Debug)]
+pub struct EvacuationNode {
+    pub id: u32,
+    pub population: u32,
+    pub max_rate: u32,
+    pub route: Vec<u32>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct EvacuationSolution {
     name: String,
     nodes: Vec<SolutionNode>,
-    valid: bool,
-    goal_value: f32,
+    pub valid: bool,
+    pub goal_value: f32,
     /// compute time (expressed in seconds)
     compute_time: f32,
     method: String,
 }
 
-struct SolutionNode {
+#[derive(Clone, PartialEq, Debug)]
+pub struct SolutionNode {
     id: u32,
     evacuation_rate: f32,
     start_date: u32,
@@ -36,6 +40,13 @@ enum ParsingState {
 }
 
 impl EvacuationInfo {
+    pub fn new(safe_node: u32) -> EvacuationInfo {
+        EvacuationInfo {
+            safe_node,
+            nodes: vec![],
+        }
+    }
+
     /// Read EvacuationInfo from a file.
     ///
     /// Parameters:
@@ -96,8 +107,22 @@ impl EvacuationInfo {
         }
     }
 
+    pub fn add_node(&mut self, node: &EvacuationNode) {
+        self.nodes.push(node.clone());
+    }
+
     pub fn is_useful(&self, node1: u32, node2: u32) -> bool {
-        return true;
+        for node in &self.nodes {
+            for i in 1..node.route.len() {
+                if node1 == node.route[i] && node2 == node.route[i - 1]
+                    || node1 == node.route[i - 1] && node2 == node.route[i]
+                {
+                    return true;
+                }
+            }
+        }
+
+        false
     }
 }
 
@@ -142,7 +167,7 @@ impl EvacuationSolution {
         let mut result = String::with_capacity(1000);
         result.push_str(self.name.as_str());
         result.push_str("\n");
-        result.push_str(self.nodes.iter().count().to_string().as_str());
+        result.push_str(self.nodes.len().to_string().as_str());
         result.push_str("\n");
 
         for node in &self.nodes {
@@ -176,9 +201,5 @@ impl EvacuationSolution {
             evacuation_rate,
             start_date,
         });
-    }
-
-    pub fn check(&self) -> bool {
-        false
     }
 }

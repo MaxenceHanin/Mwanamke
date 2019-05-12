@@ -92,7 +92,7 @@ impl RoadNetwork {
     }
 
     fn add_edge_reference(&mut self, node: u32, edge: u32) {
-        let mut vec = match self.nodes.entry(node) {
+        let vec = match self.nodes.entry(node) {
             Entry::Occupied(val) => val.into_mut(),
             Entry::Vacant(vac) => vac.insert(vec![]),
         };
