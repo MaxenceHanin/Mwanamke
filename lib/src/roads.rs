@@ -2,6 +2,7 @@ use crate::evac::EvacuationInfo;
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct RoadNetwork {
     /// This map associates a node to a Vec containing the ids of
     /// the edges connected to this node.
@@ -9,12 +10,13 @@ pub struct RoadNetwork {
     edges: HashMap<u32, RoadEdge>,
 }
 
-struct RoadEdge {
-    node1: u32,
-    node2: u32,
-    due_date: u64,
-    length: f32,
-    capacity: f32,
+#[derive(Clone, PartialEq, Debug)]
+pub struct RoadEdge {
+    pub node1: u32,
+    pub node2: u32,
+    pub due_date: u64,
+    pub length: f32,
+    pub capacity: f32,
 }
 
 enum ParsingState {
@@ -25,6 +27,13 @@ enum ParsingState {
 }
 
 impl RoadNetwork {
+    pub fn new() -> RoadNetwork {
+        RoadNetwork {
+            nodes: HashMap::new(),
+            edges: HashMap::new(),
+        }
+    }
+
     /// Read EvacuationInfo from a file.
     ///
     /// Parameters:
@@ -97,5 +106,11 @@ impl RoadNetwork {
             Entry::Vacant(vac) => vac.insert(vec![]),
         };
         vec.push(edge);
+    }
+
+    pub fn add_road_edge(&mut self, key: u32, edge: RoadEdge) {
+        self.add_edge_reference(edge.node1, key);
+        self.add_edge_reference(edge.node2, key);
+        self.edges.insert(key, edge);
     }
 }

@@ -11,5 +11,5 @@ fn main() {
     file.read_to_string(&mut file_str).unwrap();
 
     let evac_info = EvacuationInfo::from_file(&file_str).unwrap();
-    let road_network = RoadNetwork::from_file(&file_str,&evac_info).unwrap();
+    let _road_network = RoadNetwork::from_file(&file_str,&evac_info).unwrap();
 }
