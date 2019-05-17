@@ -1,0 +1,12 @@
+c [evacuation info] format: header with <num evac nodes> <id of safe node> then one line per evac node with <id of the node> <population> <max rate> <k> <v1> ... <vk> where v1,...,vk is the escape route for this node
+3 13
+1 48 7 3 11 12 13
+2 30 3 3 11 12 13
+3 33 3 2 12 13
+c [graph] format: header with <num nodes> <num edges> then one line per edge <node 1> <node 2> <duedate> <length> <capacity>
+6 5
+1 11 13 7 8
+2 11 26 4 5
+3 12 28 6 3
+11 12 33 9 10
+12 13 46 12 11
