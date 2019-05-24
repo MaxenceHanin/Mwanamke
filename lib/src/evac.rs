@@ -93,17 +93,17 @@ impl EvacuationInfo {
         self.nodes.push(node.clone());
     }
 
-    pub fn is_useful(&self, node1: u32, node2: u32) -> bool {
+    pub fn get_edge(&self, node1: u32, node2: u32) -> Option<(u32, u32)> {
         for node in &self.nodes {
             for i in 1..node.route.len() {
                 if node1 == node.route[i] && node2 == node.route[i - 1]
                     || node1 == node.route[i - 1] && node2 == node.route[i]
                 {
-                    return true;
+                    return Some((node.route[i - 1], node.route[i]));
                 }
             }
         }
 
-        false
+        None
     }
 }
