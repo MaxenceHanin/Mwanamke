@@ -49,13 +49,13 @@ mod tests {
             max_rate: 10,
             route: vec![19, 13, 5],
         });
-        let mut road_network = RoadNetwork::new();
+        let mut road_network = RoadNetwork::new(evac_info.clone());
 
         road_network.add_road_edge(
             0,
             RoadEdge {
-                node1: 18,
-                node2: 15,
+                parent: 18,
+                child: 15,
                 due_date: 51,
                 length: 45,
                 capacity: 100,
@@ -64,8 +64,8 @@ mod tests {
         road_network.add_road_edge(
             1,
             RoadEdge {
-                node1: 15,
-                node2: 5,
+                parent: 15,
+                child: 5,
                 due_date: 51,
                 length: 92,
                 capacity: 31,
@@ -73,7 +73,7 @@ mod tests {
         );
 
         let info2 = RoadNetwork::from_file(
-            "c [graph] blabla\n19 4\n12 13 51 46 49\n3 5 13 78 38\n18 15 51 45 100\n15 5 51 92 31\n", &evac_info
+            "c [graph] blabla\n19 4\n12 13 51 46 49\n3 5 13 78 38\n18 15 51 45 100\n15 5 51 92 31\n", evac_info
         );
         assert_eq!(road_network, info2.unwrap());
     }

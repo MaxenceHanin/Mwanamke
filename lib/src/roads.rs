@@ -4,11 +4,11 @@ use std::collections::HashMap;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct RoadNetwork {
+    pub evac_info: EvacuationInfo,
     /// This map associates a node to a Vec containing the ids of
     /// the edges connected to this node.
     nodes: HashMap<u32, Vec<u32>>,
     edges: HashMap<u32, RoadEdge>,
-    leaves: Vec<u32>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
@@ -28,11 +28,11 @@ enum ParsingState {
 }
 
 impl RoadNetwork {
-    pub fn new() -> RoadNetwork {
+    pub fn new(evac_info: EvacuationInfo) -> RoadNetwork {
         RoadNetwork {
+            evac_info,
             nodes: HashMap::new(),
             edges: HashMap::new(),
-            leaves: vec![],
         }
     }
 
@@ -42,15 +42,15 @@ impl RoadNetwork {
     /// * `filestr`: content of the file containing the data
     pub fn from_file(
         filestr: &str,
-        evacinfo: &EvacuationInfo,
+        evac_info: EvacuationInfo,
     ) -> Result<RoadNetwork, &'static str> {
         let mut parsing = ParsingState::Section;
         let mut node_count = -1i32;
         let mut key = 0;
         let mut result = RoadNetwork {
+            evac_info,
             nodes: HashMap::new(),
             edges: HashMap::new(),
-            leaves: vec![],
         };
 
         for line in filestr.lines() {
@@ -71,7 +71,7 @@ impl RoadNetwork {
                     };
                 }
                 ParsingState::Road => {
-                    if let Some((parent, child)) = evacinfo.get_edge(
+                    if let Some((parent, child)) = result.evac_info.get_edge(
                         words[0].parse::<u32>().unwrap(),
                         words[1].parse::<u32>().unwrap(),
                     ) {
@@ -116,4 +116,6 @@ impl RoadNetwork {
         self.add_edge_reference(edge.child, key);
         self.edges.insert(key, edge);
     }
+
+    pub fn get_next_node(&self, node: u32) {}
 }
