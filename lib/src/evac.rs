@@ -94,6 +94,16 @@ impl EvacuationInfo {
         self.nodes.push(node.clone());
     }
 
+    /// Returns EvacuationNode struct corresponding to the requested node.
+    pub fn get_evacuation_data(&self, node_id: u32) -> Option<&EvacuationNode> {
+        for node in &self.nodes {
+            if node.id == node_id {
+                return Some(node);
+            }
+        }
+        None
+    }
+
     pub fn get_edge(&self, node1: u32, node2: u32) -> Option<(u32, u32)> {
         for node in &self.nodes {
             for i in 1..node.route.len() {
