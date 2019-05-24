@@ -8,12 +8,13 @@ pub struct RoadNetwork {
     /// the edges connected to this node.
     nodes: HashMap<u32, Vec<u32>>,
     edges: HashMap<u32, RoadEdge>,
+    leaves: Vec<u32>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct RoadEdge {
-    pub node1: u32,
-    pub node2: u32,
+    pub parent: u32,
+    pub child: u32,
     pub due_date: u64,
     pub length: u32,
     pub capacity: u32,
@@ -31,6 +32,7 @@ impl RoadNetwork {
         RoadNetwork {
             nodes: HashMap::new(),
             edges: HashMap::new(),
+            leaves: vec![],
         }
     }
 
@@ -48,6 +50,7 @@ impl RoadNetwork {
         let mut result = RoadNetwork {
             nodes: HashMap::new(),
             edges: HashMap::new(),
+            leaves: vec![],
         };
 
         for line in filestr.lines() {
@@ -68,19 +71,19 @@ impl RoadNetwork {
                     };
                 }
                 ParsingState::Road => {
-                    if evacinfo.is_useful(
+                    if let Some((parent, child)) = evacinfo.get_edge(
                         words[0].parse::<u32>().unwrap(),
                         words[1].parse::<u32>().unwrap(),
                     ) {
                         let edge = RoadEdge {
-                            node1: words[0].parse::<u32>().unwrap(),
-                            node2: words[1].parse::<u32>().unwrap(),
+                            parent,
+                            child,
                             due_date: words[2].parse::<u64>().unwrap(),
                             length: words[3].parse::<u32>().unwrap(),
                             capacity: words[4].parse::<u32>().unwrap(),
                         };
-                        result.add_edge_reference(edge.node1, key);
-                        result.add_edge_reference(edge.node2, key);
+                        result.add_edge_reference(edge.parent, key);
+                        result.add_edge_reference(edge.child, key);
                         result.edges.insert(key, edge);
                         key += 1;
                     }
@@ -109,8 +112,8 @@ impl RoadNetwork {
     }
 
     pub fn add_road_edge(&mut self, key: u32, edge: RoadEdge) {
-        self.add_edge_reference(edge.node1, key);
-        self.add_edge_reference(edge.node2, key);
+        self.add_edge_reference(edge.parent, key);
+        self.add_edge_reference(edge.child, key);
         self.edges.insert(key, edge);
     }
 }
