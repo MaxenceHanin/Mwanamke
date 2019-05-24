@@ -1,9 +1,10 @@
+pub mod checker;
 pub mod evac;
 pub mod roads;
 
 #[cfg(test)]
 mod tests {
-    use crate::evac::{EvacuationInfo, EvacuationNode, EvacuationSolution};
+    use crate::evac::{EvacuationInfo, EvacuationNode};
     use crate::roads::{RoadEdge, RoadNetwork};
 
     #[test]
@@ -56,8 +57,8 @@ mod tests {
                 node1: 18,
                 node2: 15,
                 due_date: 51,
-                length: 45.5,
-                capacity: 100.4,
+                length: 45,
+                capacity: 100,
             },
         );
         road_network.add_road_edge(
@@ -66,27 +67,14 @@ mod tests {
                 node1: 15,
                 node2: 5,
                 due_date: 51,
-                length: 92.5,
-                capacity: 31.4,
+                length: 92,
+                capacity: 31,
             },
         );
 
         let info2 = RoadNetwork::from_file(
-            "c [graph] blabla\n19 4\n12 13 51 46.5 49.4\n3 5 13 78.5 38.4\n18 15 51 45.5 100.4\n15 5 51 92.5 31.4\n", &evac_info
+            "c [graph] blabla\n19 4\n12 13 51 46 49\n3 5 13 78 38\n18 15 51 45 100\n15 5 51 92 31\n", &evac_info
         );
         assert_eq!(road_network, info2.unwrap());
-    }
-
-    #[test]
-    fn test_parsing_evac_solution() {
-        let mut evac_solution = EvacuationSolution::new("solution");
-        evac_solution.valid = true;
-        evac_solution.goal_value = 48.0;
-        evac_solution.add_node(5, 10.0, 4);
-
-        assert_eq!(
-            evac_solution,
-            EvacuationSolution::from_file(evac_solution.to_file().as_str()).unwrap()
-        );
     }
 }

@@ -15,8 +15,8 @@ pub struct RoadEdge {
     pub node1: u32,
     pub node2: u32,
     pub due_date: u64,
-    pub length: f32,
-    pub capacity: f32,
+    pub length: u32,
+    pub capacity: u32,
 }
 
 enum ParsingState {
@@ -76,8 +76,8 @@ impl RoadNetwork {
                             node1: words[0].parse::<u32>().unwrap(),
                             node2: words[1].parse::<u32>().unwrap(),
                             due_date: words[2].parse::<u64>().unwrap(),
-                            length: words[3].parse::<f32>().unwrap(),
-                            capacity: words[4].parse::<f32>().unwrap(),
+                            length: words[3].parse::<u32>().unwrap(),
+                            capacity: words[4].parse::<u32>().unwrap(),
                         };
                         result.add_edge_reference(edge.node1, key);
                         result.add_edge_reference(edge.node2, key);

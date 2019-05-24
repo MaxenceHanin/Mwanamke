@@ -14,24 +14,6 @@ pub struct EvacuationNode {
     pub route: Vec<u32>,
 }
 
-#[derive(Clone, PartialEq, Debug)]
-pub struct EvacuationSolution {
-    name: String,
-    nodes: Vec<SolutionNode>,
-    pub valid: bool,
-    pub goal_value: f32,
-    /// compute time (expressed in seconds)
-    compute_time: f32,
-    method: String,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct SolutionNode {
-    id: u32,
-    evacuation_rate: f32,
-    start_date: u32,
-}
-
 enum ParsingState {
     Section,
     Size,
@@ -123,83 +105,5 @@ impl EvacuationInfo {
         }
 
         false
-    }
-}
-
-impl EvacuationSolution {
-    pub fn new(name: &str) -> EvacuationSolution {
-        EvacuationSolution {
-            name: String::from(name),
-            nodes: vec![],
-            valid: false,
-            goal_value: 0.0,
-            compute_time: 0.0,
-            method: String::from("handmade v0.0.0"),
-        }
-    }
-
-    pub fn from_file(filestr: &str) -> Result<EvacuationSolution, &str> {
-        let mut result = EvacuationSolution::new("");
-        let mut lines = filestr.lines();
-
-        result.name = String::from(lines.next().unwrap());
-        let node_count = lines.next().unwrap().parse::<u32>().unwrap();
-
-        for _ in 0..node_count {
-            let words: Vec<&str> = lines.next().unwrap().split(" ").collect();
-            let node = SolutionNode {
-                id: words[0].parse::<u32>().unwrap(),
-                evacuation_rate: words[1].parse::<f32>().unwrap(),
-                start_date: words[2].parse::<u32>().unwrap(),
-            };
-            result.nodes.push(node);
-        }
-
-        result.valid = lines.next().unwrap().starts_with("valid");
-        result.goal_value = lines.next().unwrap().parse::<f32>().unwrap();
-        result.compute_time = lines.next().unwrap().parse::<f32>().unwrap();
-        result.method = String::from(lines.next().unwrap());
-
-        Ok(result)
-    }
-
-    pub fn to_file(&self) -> String {
-        let mut result = String::with_capacity(1000);
-        result.push_str(self.name.as_str());
-        result.push_str("\n");
-        result.push_str(self.nodes.len().to_string().as_str());
-        result.push_str("\n");
-
-        for node in &self.nodes {
-            result.push_str(node.id.to_string().as_str());
-            result.push_str(" ");
-            result.push_str(node.evacuation_rate.to_string().as_str());
-            result.push_str(" ");
-            result.push_str(node.start_date.to_string().as_str());
-            result.push_str("\n");
-        }
-
-        if self.valid {
-            result.push_str("valid\n");
-        } else {
-            result.push_str("invalid\n");
-        }
-
-        result.push_str(self.goal_value.to_string().as_str());
-        result.push_str("\n");
-        result.push_str(self.compute_time.to_string().as_str());
-        result.push_str("\n");
-        result.push_str(self.method.as_str());
-        result.push_str("\n");
-
-        result
-    }
-
-    pub fn add_node(&mut self, id: u32, evacuation_rate: f32, start_date: u32) {
-        self.nodes.push(SolutionNode {
-            id,
-            evacuation_rate,
-            start_date,
-        });
     }
 }
