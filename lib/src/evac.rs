@@ -1,4 +1,3 @@
-use crate::checker::EvacuationSolution;
 use std::iter::Iterator;
 
 #[derive(Clone, PartialEq, Debug)]
