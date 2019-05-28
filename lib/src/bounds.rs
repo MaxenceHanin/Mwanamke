@@ -9,7 +9,6 @@ pub fn next_node(tree:RoadNetwork, next : Option<RoadEdge>, time: u32, length: u
         None    => time,
     }
 }
-   
 pub fn bound_inf(tree:RoadNetwork) -> u32{
     let mut result_final = 0;//u32::min_value();
     let mut result = u32::min_value();
@@ -23,6 +22,19 @@ pub fn bound_inf(tree:RoadNetwork) -> u32{
         if result > result_final {
             result_final = result;
         }
+    }
+    return result_final;
+}
+pub fn bound_sup(tree:RoadNetwork) -> u32{
+    let mut result_final = 0;//u32::min_value();
+    let mut result = 0;
+    let mut _road : RoadNetwork;
+    
+    for node in tree.clone().evac_info.nodes {
+        if let Some(road) = tree.clone().get_child_edge(node.id){
+            result = next_node(tree.clone(),tree.get_child_edge(node.id),result,road.length);
+        }
+        result_final = result_final + result;
     }
     return result_final;
 }
@@ -77,18 +89,4 @@ mod tests {
             println!("Result found for test bound min: {}",inf);
             assert_eq!(inf, 92);
         }
-}
-
-pub fn bound_sup(tree:RoadNetwork) -> u32{
-    let mut result_final = 0;//u32::min_value();
-    let mut result = 0;
-    let mut _road : RoadNetwork;
-    
-    for node in tree.clone().evac_info.nodes {
-        if let Some(road) = tree.clone().get_child_edge(node.id){
-            result = next_node(tree.clone(),tree.get_child_edge(node.id),result,road.length);
-        }
-        result_final = result_final + result;
-    }
-    return result_final;
 }
