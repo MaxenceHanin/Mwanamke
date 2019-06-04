@@ -117,12 +117,14 @@ impl RoadNetwork {
         self.edges.insert(key, edge);
     }
 
-    pub fn get_child_edge(&self, node: u32) -> Option<RoadEdge> {
-        for edge_id in self.nodes.get(&node).unwrap() {
-            let edge = self.edges.get(edge_id).unwrap();
+    pub fn get_child_edge(&self, node_id: u32) -> Option<RoadEdge> {
+        if let Some(node) = self.nodes.get(&node_id) {
+            for edge_id in node {
+                let edge = self.edges.get(edge_id).unwrap();
 
-            if edge.parent == node {
-                return Some(edge.clone());
+                if edge.parent == node_id {
+                    return Some(edge.clone());
+                }
             }
         }
         None
