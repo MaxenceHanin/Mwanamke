@@ -3,7 +3,7 @@ use std::iter::Iterator;
 #[derive(Clone, PartialEq, Debug)]
 pub struct EvacuationInfo {
     pub safe_node: u32,
-    nodes: Vec<EvacuationNode>,
+    pub nodes: Vec<EvacuationNode>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
