@@ -27,7 +27,7 @@ struct NodeCheck {
     end_date: u32,
     start_rate: u32,
     end_rate: u32,
-    max_rate: u32
+    max_rate: u32,
 }
 
 impl EvacuationSolution {
@@ -165,8 +165,7 @@ impl EvacuationSolution {
                         if old_node.start_id == new_node.start_id {
                             if old_node.end_date == t {
                                 count += old_node.end_rate;
-                            }
-                            else if old_node.start_rate <= t && t < old_node.end_date {
+                            } else if old_node.start_rate <= t && t < old_node.end_date {
                                 count += old_node.start_rate;
                             }
                         }
@@ -200,5 +199,4 @@ mod tests {
             EvacuationSolution::from_file(evac_solution.to_file().as_str()).unwrap()
         );
     }
-
 }
