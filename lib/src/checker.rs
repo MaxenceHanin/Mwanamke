@@ -4,19 +4,19 @@ use std::iter::Iterator;
 #[derive(Clone, PartialEq, Debug)]
 pub struct EvacuationSolution {
     name: String,
-    nodes: Vec<SolutionNode>,
+    pub nodes: Vec<SolutionNode>,
     pub valid: bool,
     pub goal_value: f32,
     /// compute time (expressed in seconds)
-    compute_time: f32,
+    pub compute_time: f32,
     method: String,
 }
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SolutionNode {
     id: u32,
-    evacuation_rate: u32,
-    start_date: u32,
+    pub evacuation_rate: u32,
+    pub start_date: u32,
 }
 
 #[derive(Clone)]

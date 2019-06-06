@@ -36,7 +36,7 @@ impl RoadNetwork {
         }
     }
 
-    /// Read EvacuationInfo from a file.
+    /// Read RoadNetwork from a file.
     ///
     /// Parameters:
     /// * `filestr`: content of the file containing the data

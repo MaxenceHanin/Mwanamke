@@ -2,6 +2,8 @@ pub mod bounds;
 pub mod checker;
 pub mod evac;
 pub mod roads;
+pub mod bounds;
+//pub mod localsearch;
 
 #[cfg(test)]
 mod tests {
