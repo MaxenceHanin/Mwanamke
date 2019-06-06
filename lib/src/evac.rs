@@ -89,6 +89,17 @@ impl EvacuationInfo {
         }
     }
 
+    pub fn dump(&self) {
+        for n in &self.nodes {
+            print!("{}", n.id);
+
+            for i in &n.route {
+                print!(" -> {}", i);
+            }
+            println!();
+        }
+    }
+
     pub fn add_node(&mut self, node: &EvacuationNode) {
         self.nodes.push(node.clone());
     }
@@ -105,11 +116,13 @@ impl EvacuationInfo {
 
     pub fn get_edge(&self, node1: u32, node2: u32) -> Option<(u32, u32)> {
         for node in &self.nodes {
-            for i in 1..node.route.len() {
-                if node1 == node.route[i] && node2 == node.route[i - 1]
-                    || node1 == node.route[i - 1] && node2 == node.route[i]
+            for i in 0..node.route.len() {
+                let parent_node = if i > 0 { node.route[i - 1] } else { node.id };
+
+                if node1 == node.route[i] && node2 == parent_node
+                    || node1 == parent_node && node2 == node.route[i]
                 {
-                    return Some((node.route[i - 1], node.route[i]));
+                    return Some((parent_node, node.route[i]));
                 }
             }
         }

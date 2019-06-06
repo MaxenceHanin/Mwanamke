@@ -103,6 +103,24 @@ impl RoadNetwork {
         }
     }
 
+    pub fn dump(&self) {
+        self.evac_info.dump();
+
+        for n in &self.nodes {
+            print!("{}: ", n.0);
+
+            for i in n.1 {
+                print!("{} ", i);
+            }
+            println!();
+        }
+        println!("Edges:");
+
+        for e in &self.edges {
+            println!("* {} -> {}", e.1.parent, e.1.child);
+        }
+    }
+
     fn add_edge_reference(&mut self, node: u32, edge: u32) {
         let vec = match self.nodes.entry(node) {
             Entry::Occupied(val) => val.into_mut(),
@@ -129,4 +147,11 @@ impl RoadNetwork {
         }
         None
     }
+}
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn test_get_chid_edge() {}
 }
